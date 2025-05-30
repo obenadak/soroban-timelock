@@ -1,0 +1,82 @@
+[package]
+# --- Paket Bilgileri ---
+name = "soroban-timelock"
+# Proje adı: "soroban-timelock".
+# Bu ad, kütüphaneyayınlandığında veya başka projeler tarafından kullanıldığında kullanılır.
+version = "0.0.0"
+# Proje mevcut sürümü: "0.0.0".
+
+edition = "2021"
+# Projenin kullanacağı Rust sürümü (edition): "2021".
+# Rust "edition"ları, dile geriye dönük uyumluluğu bozmadan yeni özellikler ekler.
+publish = false
+# Bu paketin crates.io'ya (Rust'ın resmi paket deposu) yayınlanıp yayınlanmayacağı: `false`.
+# `false` olması, `cargo publish` komutuyla kazara yayınlanmasını engeller.
+
+[lib]
+# --- Kütüphane Ayarları ---
+# Bu bölüm, projeniz bir kütüphane olarak derleniyorsa özel ayarlarını içerir.
+crate-type = ["cdylib"]
+# Kütüphanenin derlenme türü: "cdylib" (C Dinamik Kütüphanesi).
+# Soroban akıllı kontratları WebAssembly (Wasm) olarak derlenir ve "cdylib" bu tür bir çıktı üretir.
+# Bu, kütüphanenin Wasm çalışma zamanı gibi C uyumlu arayüzlerle etkileşim kurmasını sağlar.
+doctest = false
+# Belge testlerinin (`///` ile başlayan yorumlardaki kod örnekleri) çalıştırılıp çalıştırılmayacağı: `false`.
+# `false` ise, `cargo test` komutu bu testleri atlar.
+
+[dependencies]
+# --- Bağımlılıklar ---
+# Projenizin normal çalışması için gerekli olan kütüphaneler (bağımlılıklar).
+soroban-sdk = { version = "22.0.1" }
+# "soroban-sdk" kütüphanesine bağımlılık.
+#   version = "22.0.1": Bu kütüphanenin "22.0.1" sürümünü kullanır.
+#   "soroban-sdk", Soroban akıllı kontratları geliştirmek için temel araçları ve API'leri sağlar.
+
+[dev-dependencies]
+# --- Geliştirme Bağımlılıkları ---
+# Yalnızca geliştirme ve test sırasında ihtiyaç duyulan kütüphaneler.
+# Bu bağımlılıklar, projeniz yayın (release) modunda derlendiğinde nihai ürüne dahil edilmez.
+soroban-sdk = { version = "22.0.1", features = ["testutils"] }
+# Geliştirme için yine "soroban-sdk" kütüphanesinin "22.0.1" sürümü.
+#   features = ["testutils"]: "soroban-sdk" kütüphanesinin "testutils" adlı ek özelliğini etkinleştirir.
+#   Bu özellik, birim testleri yazmak için ek yardımcı programlar sağlar.
+
+[profile.release]
+# --- Yayın (Release) Profili Ayarları ---
+# `cargo build --release` ile yapılan yayın/üretim derlemeleri için derleyici ayarları.
+opt-level = "z"
+# Optimizasyon seviyesi: "z" (kod boyutunu en aza indirme optimizasyonu).
+# WebAssembly (Wasm) gibi boyutun önemli olduğu hedefler için yaygındır.
+overflow-checks = true
+# Tamsayı taşması kontrolleri: `true` (etkin).
+# Taşma durumunda program panikler. Güvenliği artırır, akıllı kontratlar için önerilir.
+debug = 0
+# Hata ayıklama bilgisi seviyesi: `0` (hiçbir hata ayıklama bilgisi eklenmez).
+# Dosya boyutunu küçültür.
+strip = "symbols"
+# Sembollerin çıkarılması: "symbols" (gereksiz semboller çıkarılır).
+# Dosya boyutunu daha da azaltır.
+debug-assertions = false
+# `debug_assert!` makrolarının durumu: `false` (kaldırılır).
+# Performansı artırır ve boyutu küçültür.
+panic = "abort"
+# Panik durumunda davranış: "abort" (program hemen sonlandırılır).
+# Daha küçük kod boyutu üretebilir, Wasm hedefleri için yaygındır.
+codegen-units = 1
+# Kod üretim birimi sayısı: `1`.
+# Tüm kod tek bir birim olarak derlenir, bu da daha iyi optimizasyonlara yol açabilir ancak derleme süresini uzatabilir.
+lto = true
+# Bağlantı Zamanı Optimizasyonu (Link-Time Optimization): `true` (etkin).
+# Derleyici, tüm kod birimlerini bağlarken ek optimizasyonlar yapar.
+# Genellikle daha iyi performans ve daha küçük kod boyutu sağlar, ancak derleme süresini artırır.
+
+[profile.release-with-logs]
+# --- Loglu Yayın Profili Ayarları (Özel Profil) ---
+# "release-with-logs" adında özel bir derleme profili.
+# Normal yayın profiline ek olarak bazı hata ayıklama özelliklerini etkinleştirmek için kullanılır.
+inherits = "release"
+# Bu profil, ayarlarının çoğunu `[profile.release]` bölümünden miras alır.
+debug-assertions = true
+# `debug_assert!` makrolarının durumu: `true` (etkin).
+# Bu, üretim benzeri optimizasyonlarla derleme yaparken bazı onaylamaların çalışmasını sağlar.
+# Bu profil `cargo build --profile release-with-logs` komutuyla kullanılır.
