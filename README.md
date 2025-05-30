@@ -19,6 +19,8 @@ This repository uses the recommended structure for a Soroban project:
 
 This project implements a "Claimable Balance with Timelock" smart contract on the Soroban platform. It allows a depositor to lock a certain amount of a specified token, making it claimable by a predefined set of claimants only after (or before) a specific time condition is met.
 
+This project was developed as part of the Stellar Bootcamp by [Rise In](https://www.risein.com/).
+
 ## Features
 
 *   **Token Deposit:** Users can deposit a specific token (SRC-20 compatible) into the contract.
