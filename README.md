@@ -21,6 +21,9 @@ This project implements a "Claimable Balance with Timelock" smart contract on th
 
 **This project was developed as part of the Stellar Bootcamp by [Rise In](https://www.risein.com/).**
 
+*The code in this project has been interpreted with the help of AI.*
+
+
 ## Features
 
 *   **Token Deposit:** Users can deposit a specific token (SRC-20 compatible) into the contract.
