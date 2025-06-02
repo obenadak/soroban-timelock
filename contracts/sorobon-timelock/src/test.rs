@@ -104,12 +104,12 @@ impl<'a> ClaimableBalanceTest<'a> {
         // `claim_addresses` dizisi için üç adet rastgele Soroban adresi oluşturur.
         let claim_addresses = [
             Address::generate(&env),
-            Address.generate(&env),
-            Address.generate(&env),
+            Address::generate(&env),
+            Address::generate(&env),
         ];
 
         // Token kontratının yöneticisi için rastgele bir adres oluşturur.
-        let token_admin = Address.generate(&env);
+        let token_admin = Address::generate(&env);
 
         // `create_token_contract` helper fonksiyonunu kullanarak bir token kontratı oluşturur
         // ve token istemcisi ile token admin istemcisini alır.
